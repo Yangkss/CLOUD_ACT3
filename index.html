@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Number Garden - Grade 1 Math</title>
+<style>
+:root{--ink:#1f2544;--muted:#5f6488;--pink:#ffc2da;--violet:#7c5cff;--berry:#ff5d8f;--mint:#12a594;--paper:#fdf7ff;--soil:#f3e3d3}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Trebuchet MS","Segoe UI Rounded",system-ui,sans-serif;color:var(--ink);background:linear-gradient(#e4ecff,var(--paper) 40%,#e6fbf3);min-height:100vh;display:flex;flex-direction:column}
+button{font:inherit;color:inherit;border:0;cursor:pointer;background:none}
+button:focus-visible,input:focus-visible{outline:4px solid var(--ink);outline-offset:2px}
+header{background:#fff;border-bottom:4px solid var(--pink);position:sticky;top:0;z-index:10}
+.bar{max-width:980px;margin:auto;padding:10px 18px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.logo{font-size:1.5rem;font-weight:bold;display:flex;gap:8px;align-items:center}
+.chip{background:var(--pink);border-radius:14px;padding:8px 14px;font-weight:bold}
+.tools{display:flex;gap:8px;align-items:center}
+.ibtn{background:#f1edff;border-radius:12px;padding:8px 12px;font-weight:bold}
+main{flex:1;width:100%;max-width:980px;margin:auto;padding:24px 18px}
+footer{text-align:center;color:var(--muted);font-size:.8rem;padding:14px}
+.welcome{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;background:#fff;border-radius:26px;padding:24px;border:3px solid #e9e2ff;margin-bottom:22px}
+.welcome h1{font-size:clamp(1.5rem,4vw,2.1rem);margin-bottom:6px}
+.welcome p{color:var(--muted);line-height:1.5}
+.lvl{display:flex;gap:8px;margin-top:14px}
+.lvl button{padding:8px 16px;border-radius:99px;border:2px solid #d8d0ff;font-weight:bold}
+.lvl button.on{background:var(--violet);color:#fff;border-color:var(--violet)}
+.sun{font-size:4rem}
+h2{font-size:1.4rem;margin:26px 0 12px}
+.beds{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
+.bed{background:var(--soil);border-radius:24px 24px 12px 12px;padding:18px;text-align:center;border-bottom:10px solid #c9a27c;transition:transform .15s}
+.bed:hover{transform:translateY(-3px)}
+.plant{font-size:3.6rem;height:74px;display:block}
+.bed h3{margin:6px 0 2px}
+.bed small{display:block;color:#6b5a48;margin-bottom:8px}
+.bar2{height:10px;background:#fff8;border-radius:9px;overflow:hidden;margin-bottom:8px}
+.bar2 i{display:block;height:100%;background:var(--mint)}
+.water{display:inline-block;background:var(--violet);color:#fff;padding:7px 16px;border-radius:12px;font-weight:bold}
+.badges{display:flex;flex-wrap:wrap;gap:10px}
+.badge{background:#fff;border:3px solid #eee;border-radius:16px;padding:10px 14px;font-weight:bold;opacity:.45}
+.badge.got{opacity:1;border-color:var(--pink)}
+.row{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.dark{background:var(--ink);color:#fff;padding:11px 20px;border-radius:14px;font-weight:bold}
+.ghost{border:2px solid #d8d0ff;padding:9px 18px;border-radius:14px;font-weight:bold}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.steps{display:flex;gap:6px;margin-bottom:22px}
+.steps i{flex:1;height:14px;border-radius:9px;background:#e3e0f5}
+.steps i.ok{background:var(--mint)}.steps i.no{background:var(--berry)}.steps i.now{background:var(--violet)}
+.card{background:#fff;border-radius:28px;padding:30px 22px;max-width:660px;margin:auto;text-align:center;box-shadow:0 8px 24px rgba(31,37,68,.1)}
+.card h3{font-size:1.6rem;margin-bottom:16px}
+.items{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;background:#f3fbf7;border:3px dashed var(--mint);border-radius:20px;padding:18px;font-size:2.2rem;min-height:100px;align-items:center}
+.eq{font-size:2.6rem;font-weight:bold;margin:10px 0}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-top:20px}
+.opt{background:#fff;border:3px solid #ddd;border-radius:18px;padding:16px 8px;font-size:1.5rem;font-weight:bold}
+.opt:hover:not(:disabled){border-color:var(--violet)}
+.opt.right{background:#d3f5ee;border-color:var(--mint)}.opt.wrong{background:#ffe1ec;border-color:var(--berry)}
+.fb{min-height:52px;margin-top:18px;font-weight:bold;font-size:1.15rem;padding:12px;border-radius:16px}
+.fb.ok{background:#d3f5ee}.fb.no{background:#ffe1ec}
+.modal{position:fixed;inset:0;background:rgba(31,37,68,.55);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
+.modal.open{display:flex}
+.box{background:#fff;border:4px solid var(--pink);border-radius:26px;padding:26px;max-width:470px;width:100%;max-height:90vh;overflow:auto}
+.box h3{text-align:center;font-size:1.5rem;margin-bottom:10px}
+.box .big{text-align:center;font-size:3.4rem}
+.box p,.box li{color:var(--muted);line-height:1.5}
+.box ol{padding-left:20px;margin-bottom:8px}.box ol ol{margin-top:4px}
+.box code,.box input{background:#f1edff;padding:2px 6px;border-radius:6px;color:var(--ink)}
+.box input{width:100%;font:inherit;padding:12px;border:3px solid #d8d0ff;border-radius:14px;margin-top:12px}
+.cta{width:100%;margin-top:16px;background:var(--violet);color:#fff;padding:13px;border-radius:14px;font-weight:bold;font-size:1.1rem}
+.pop{position:fixed;font-size:2rem;pointer-events:none;animation:rise 1s ease-out forwards;z-index:60}
+@keyframes rise{to{transform:translateY(-110px) rotate(25deg);opacity:0}}
+@media (max-width:560px){.welcome{grid-template-columns:1fr}.sun{display:none}}
+@media (prefers-reduced-motion:reduce){.pop{display:none}*{transition:none!important}}
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <button class="logo" onclick="app.home()" aria-label="Home">🌻 Number Garden</button>
+  <div class="tools"><span class="chip" id="stars" aria-live="polite">⭐ 0</span><button class="ibtn" id="snd" onclick="app.toggleSound()" aria-label="Toggle sound">🔊</button></div>
+</div></header>
+<main id="main"></main>
+<footer>Number Garden • A Grade 1 math game • Built for GitHub Pages</footer>
+<div class="modal" id="modal" role="dialog" aria-modal="true"><div class="box" id="box"></div></div>
+
+<script>
+const KEY='number_garden_v1';
+const $=id=>document.getElementById(id);
+const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const shuffle=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(x=>x[1]);
+const pick=a=>a[rnd(0,a.length-1)];
+const rep=(e,n)=>Array.from({length:n},()=>`<span>${e}</span>`).join('');
+const FRUIT=['🍎','🍓','🍊','🐝','🦋','🐞','🐟','🎈','🍪','🐥'];
+
+/* ---- Question generators: every round is new ---- */
+function numOpts(ans,max){
+  const s=new Set([ans]);
+  while(s.size<3){const v=ans+pick([-2,-1,1,2]);if(v>=0&&v<=max+2)s.add(v)}
+  return shuffle([...s]).map(v=>({t:String(v),ok:v===ans}));
+}
+const SHAPES=[
+  ['Which shape has 3 corners?','🔺 Triangle',['🟦 Square','🔵 Circle']],
+  ['Which shape is round like a ball?','🔵 Circle',['🔺 Triangle','🟦 Square']],
+  ['Which shape has 4 equal sides?','🟦 Square',['🔺 Triangle','⭐ Star']],
+  ['Which shape has 5 points?','⭐ Star',['🔵 Circle','🟦 Square']],
+  ['Which shape has no corners?','🔵 Circle',['🟦 Square','🔺 Triangle']],
+  ['How many corners does a square have?','4',['3','5']],
+  ['How many sides does a triangle have?','3',['4','2']]
+];
+function shapeQ(){
+  if(Math.random()<.4){
+    const a=pick(['🔴','🟢','🟡']),b=pick(['🔵','🟣','🟠']);
+    return{q:`Finish the pattern: ${a} ${b} ${a} ${b} ?`,opts:shuffle([a,b,'⚪'].map(t=>({t,ok:t===a})))};
+  }
+  const [q,ok,bad]=pick(SHAPES);
+  return{q,opts:shuffle([ok,...bad].map(t=>({t,ok:t===ok})))};
+}
+const TOPICS=[
+  {id:'counting',name:'Counting Patch',icon:'🔢',sub:'Count what you see',gen:m=>{
+     const n=rnd(2,m),e=pick(FRUIT);
+     if(Math.random()<.35){const a=rnd(1,m),b=rnd(1,m)===a?a+1:rnd(1,m);const x=a===b?a+1:b;
+       return{q:`Which number is bigger: ${a} or ${x}?`,opts:[a,x].map(v=>({t:String(v),ok:v===Math.max(a,x)}))}}
+     if(Math.random()<.3){const s=rnd(1,m-3);return{q:`What comes next? ${s}, ${s+1}, ${s+2}, ?`,opts:numOpts(s+3,m)}}
+     return{q:`How many ${e} can you count?`,html:`<div class="items">${rep(e,n)}</div>`,opts:numOpts(n,m)};}},
+  {id:'addition',name:'Adding Meadow',icon:'➕',sub:'Put groups together',gen:m=>{
+     const a=rnd(1,Math.floor(m/2)),b=rnd(1,Math.floor(m/2)),e=pick(FRUIT);
+     return{q:'Put them together!',html:`<div class="items">${rep(e,a)} ➕ ${rep(e,b)}</div><div class="eq">${a} + ${b} = ?</div>`,opts:numOpts(a+b,m)};}},
+  {id:'subtraction',name:'Taking-Away Trail',icon:'➖',sub:'See what is left',gen:m=>{
+     const a=rnd(2,m),b=rnd(0,a),e=pick(FRUIT);
+     return{q:'Take some away!',html:`<div class="items">${rep(e,a)}</div><div class="eq">${a} − ${b} = ?</div>`,opts:numOpts(a-b,m)};}},
+  {id:'shapes',name:'Shape Grove',icon:'🔷',sub:'Shapes and patterns',gen:shapeQ}
+];
+const LEVELS={easy:{label:'Seedling (to 10)',max:10},medium:{label:'Sprout (to 20)',max:20}};
+const BADGES=[
+  {id:'first',t:'🌱 First Sprout',d:s=>Object.values(s.p).some(x=>x.done)},
+  {id:'perfect',t:'💯 Perfect Round',d:s=>s.perfect},
+  {id:'keeper',t:'🌻 Garden Keeper',d:s=>TOPICS.every(t=>s.p[t.id]&&s.p[t.id].done)},
+  {id:'collector',t:'⭐ Star Collector',d:s=>Object.values(s.p).reduce((a,x)=>a+x.stars,0)>=25}
+];
+const stage=s=>s>=10?'🌻':s>=6?'🌷':s>=1?'🌱':'🌰';
+
+class App{
+  constructor(){
+    this.s={name:'',level:'easy',sound:true,perfect:false,p:{}};
+    try{Object.assign(this.s,JSON.parse(localStorage.getItem(KEY))||{})}catch(e){}
+    this.busy=false;this.home();
+    if(!this.s.name)this.askName();
+  }
+  save(){try{localStorage.setItem(KEY,JSON.stringify(this.s))}catch(e){}}
+  total(){return Object.values(this.s.p).reduce((a,x)=>a+x.stars,0)}
+  head(){$('stars').textContent=`⭐ ${this.total()}`;$('snd').textContent=this.s.sound?'🔊':'🔇'}
+  beep(ok){
+    if(!this.s.sound)return;
+    try{this.ac=this.ac||new (window.AudioContext||window.webkitAudioContext)();
+      const t=this.ac.currentTime;(ok?[523,659,784]:[220,196]).forEach((f,i)=>{
+        const o=this.ac.createOscillator(),g=this.ac.createGain();o.frequency.value=f;o.type='triangle';
+        g.gain.setValueAtTime(.15,t+i*.12);g.gain.exponentialRampToValueAtTime(.001,t+i*.12+.2);
+        o.connect(g);g.connect(this.ac.destination);o.start(t+i*.12);o.stop(t+i*.12+.2)})}catch(e){}
+  }
+  toggleSound(){this.s.sound=!this.s.sound;this.save();this.head()}
+  home(){
+    this.head();const s=this.s;
+    $('main').innerHTML=`<section class="welcome"><div><h1>Hi ${s.name||'friend'}! Let's grow your garden 🌈</h1>
+      <p>Answer 5 questions in a bed to water it. Every correct answer gives 2 stars, and 3 right in a row gives a bonus star!</p>
+      <div class="lvl">${Object.entries(LEVELS).map(([k,v])=>`<button class="${s.level===k?'on':''}" onclick="app.setLevel('${k}')">${v.label}</button>`).join('')}</div></div>
+      <div class="sun" aria-hidden="true">☀️</div></section>
+      <h2>Your garden beds</h2>
+      <div class="beds">${TOPICS.map(t=>{const p=s.p[t.id]||{stars:0,done:false};
+        return `<button class="bed" onclick="app.play('${t.id}')"><span class="plant">${stage(p.stars)}</span>
+          <h3>${t.icon} ${t.name}</h3><small>${t.sub}</small>
+          <div class="bar2"><i style="width:${Math.min(100,p.stars*10)}%"></i></div>
+          <span class="water">${p.done?'Water again':'Start watering'}</span></button>`}).join('')}</div>
+      <h2>Garden badges</h2>
+      <div class="badges">${BADGES.map(b=>`<span class="badge ${b.d(s)?'got':''}">${b.t}</span>`).join('')}</div>
+      <div class="row"><button class="dark" onclick="app.hosting()">Publish on GitHub Pages</button>
+      <button class="ghost" onclick="app.askName()">Change name</button>
+      <button class="ghost" onclick="app.reset()">Reset garden</button></div>`;
+  }
+  setLevel(k){this.s.level=k;this.save();this.home()}
+  play(id){
+    this.t=TOPICS.find(x=>x.id===id);this.i=0;this.score=0;this.streak=0;this.res=[];this.right=0;
+    this.qs=Array.from({length:5},()=>this.t.gen(LEVELS[this.s.level].max));this.show();window.scrollTo(0,0);
+  }
+  show(){
+    const q=this.qs[this.i];
+    $('main').innerHTML=`<div class="top"><button class="ghost" onclick="app.home()">← Back to garden</button>
+      <span class="chip">${this.t.icon} ${this.t.name} • Question ${this.i+1}/5</span></div>
+      <div class="steps">${this.qs.map((_,k)=>`<i class="${this.res[k]===1?'ok':this.res[k]===0?'no':k===this.i?'now':''}"></i>`).join('')}</div>
+      <div class="card"><h3>${q.q}</h3>${q.html||''}
+      <div class="opts">${q.opts.map((o,k)=>`<button class="opt" onclick="app.answer(${k},this)">${o.t}</button>`).join('')}</div>
+      <div class="fb" id="fb" aria-live="polite"></div></div>`;
+  }
+  answer(k,btn){
+    if(this.busy)return;this.busy=true;
+    const q=this.qs[this.i],bs=[...document.querySelectorAll('.opt')],fb=$('fb');
+    bs.forEach(b=>b.disabled=true);
+    if(q.opts[k].ok){
+      this.streak++;this.right++;this.res[this.i]=1;let pts=2,msg='🎉 Correct! +2 stars';
+      if(this.streak>=3){pts++;msg='🔥 Streak bonus! +3 stars'}
+      this.score+=pts;btn.classList.add('right');fb.className='fb ok';fb.textContent=msg;this.beep(true);this.pop();
+    }else{
+      this.streak=0;this.res[this.i]=0;btn.classList.add('wrong');
+      bs[q.opts.findIndex(o=>o.ok)].classList.add('right');
+      fb.className='fb no';fb.textContent='💪 Nice try! The green one is right.';this.beep(false);
+    }
+    setTimeout(()=>{this.busy=false;this.i++;this.i<5?this.show():this.finish()},1500);
+  }
+  finish(){
+    const p=this.s.p[this.t.id]||{stars:0,done:false};
+    p.stars=Math.min(15,Math.max(p.stars,this.score));p.done=true;this.s.p[this.t.id]=p;
+    if(this.right===5)this.s.perfect=true;this.save();this.head();
+    const grow=stage(p.stars);
+    this.modal(`<div class="big">${grow}</div><h3>Your ${this.t.name} grew!</h3>
+      <p style="text-align:center">${this.right} of 5 correct, ${this.score} stars earned${this.right===5?' — a perfect round!':'.'}</p>
+      <button class="cta" onclick="app.close(true)">Back to the garden</button>`);
+  }
+  askName(){
+    this.modal(`<div class="big">👋</div><h3>What's your name?</h3>
+      <input id="nm" maxlength="14" placeholder="Type your name" value="${this.s.name}" aria-label="Your name">
+      <button class="cta" onclick="app.setName()">Let's grow!</button>`);
+    setTimeout(()=>$('nm')&&$('nm').focus(),50);
+  }
+  setName(){this.s.name=($('nm').value||'').trim().replace(/[<>&"]/g,'')||'friend';this.save();this.close(true)}
+  reset(){
+    this.modal(`<h3>Reset your garden?</h3><p style="text-align:center">All stars and badges will be cleared.</p>
+      <button class="cta" style="background:var(--berry)" onclick="app.doReset()">Yes, reset</button>
+      <button class="cta" style="background:#8b90b3" onclick="app.close(false)">Keep my garden</button>`);
+  }
+  doReset(){this.s.p={};this.s.perfect=false;this.save();this.close(true)}
+  hosting(){
+    this.modal(`<h3>How to publish on GitHub Pages</h3>
+      <ol><li><strong>Add the code</strong><ol>
+        <li>In your new repository, click "uploading an existing file" or create a new file.</li>
+        <li>Name the file <code>index.html</code>.</li>
+        <li>Paste the complete HTML code into the file.</li>
+        <li>Click <strong>Commit changes</strong>.</li></ol></li>
+      <li><strong>Enable GitHub Pages</strong><ol>
+        <li>Go to the repository's <strong>Settings</strong> tab (gear icon at the top right).</li>
+        <li>In the left sidebar, click <strong>Pages</strong> (under "Code and automation").</li>
+        <li>Under Build and deployment → Source, select <strong>Deploy from a branch</strong>.</li>
+        <li>Under Branch, select <code>main</code> (or <code>master</code>), keep the folder as <code>/ (root)</code>, and click <strong>Save</strong>.</li></ol></li></ol>
+      <button class="cta" onclick="app.close(false)">Got it!</button>`);
+  }
+  modal(h){$('box').innerHTML=h;$('modal').classList.add('open')}
+  close(refresh){$('modal').classList.remove('open');if(refresh)this.home()}
+  pop(){
+    const e=document.createElement('div');e.className='pop';e.textContent=pick(['⭐','🌸','✨']);
+    e.style.left=rnd(10,85)+'%';e.style.top=rnd(35,65)+'%';document.body.appendChild(e);setTimeout(()=>e.remove(),1100);
+  }
+}
+const app=new App();
+</script>
+</body>
+</html>
